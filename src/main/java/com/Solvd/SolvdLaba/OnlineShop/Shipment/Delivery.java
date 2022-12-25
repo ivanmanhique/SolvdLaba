@@ -1,6 +1,7 @@
-package com.Solvd.SolvdLaba.OnlineShop.Shop;
+package com.Solvd.SolvdLaba.OnlineShop.Shipment;
 
 import com.Solvd.SolvdLaba.OnlineShop.Person.Courier;
+import com.Solvd.SolvdLaba.OnlineShop.Order.Order;
 
 public class Delivery{
     private final String address;

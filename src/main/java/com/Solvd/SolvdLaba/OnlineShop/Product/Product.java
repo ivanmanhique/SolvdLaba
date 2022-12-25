@@ -1,4 +1,4 @@
-package com.Solvd.SolvdLaba.OnlineShop.Shop;
+package com.Solvd.SolvdLaba.OnlineShop.Product;
 
 public class Product implements Comparable<Product>{
     private static long idCounter = 0;

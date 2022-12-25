@@ -2,8 +2,11 @@ package com.Solvd.SolvdLaba.OnlineShop.Shop;
 
 
 
+import com.Solvd.SolvdLaba.OnlineShop.Order.Order;
+import com.Solvd.SolvdLaba.OnlineShop.Order.Receipt;
 import com.Solvd.SolvdLaba.OnlineShop.Payment.Payment;
-import com.Solvd.SolvdLaba.OnlineShop.Shop.Interfaces.Orderable;
+import com.Solvd.SolvdLaba.OnlineShop.Product.Stock;
+import com.Solvd.SolvdLaba.OnlineShop.Order.Interfaces.Orderable;
 
 import java.util.ArrayList;
 import java.util.List;

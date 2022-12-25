@@ -2,7 +2,7 @@ package com.Solvd.SolvdLaba.OnlineShop.Payment;
 
 
 import com.Solvd.SolvdLaba.OnlineShop.Person.Person;
-import com.Solvd.SolvdLaba.OnlineShop.Shop.Receipt;
+import com.Solvd.SolvdLaba.OnlineShop.Order.Receipt;
 
 public class Payment{
     private final long cardNumber;

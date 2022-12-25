@@ -1,4 +1,4 @@
-package com.Solvd.SolvdLaba.OnlineShop.Shop;
+package com.Solvd.SolvdLaba.OnlineShop.Product;
 
 public enum Category{
     HOUSE(2), BOOKS(1), ELECTRONICS(5);

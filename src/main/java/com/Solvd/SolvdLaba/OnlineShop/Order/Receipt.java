@@ -1,4 +1,7 @@
-package com.Solvd.SolvdLaba.OnlineShop.Shop;
+package com.Solvd.SolvdLaba.OnlineShop.Order;
+
+import com.Solvd.SolvdLaba.OnlineShop.Shop.Shop;
+import com.Solvd.SolvdLaba.OnlineShop.Product.Stock;
 
 import java.util.List;
 

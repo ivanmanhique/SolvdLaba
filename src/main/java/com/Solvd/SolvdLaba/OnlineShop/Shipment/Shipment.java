@@ -1,8 +1,10 @@
-package com.Solvd.SolvdLaba.OnlineShop.Shop;
+package com.Solvd.SolvdLaba.OnlineShop.Shipment;
 
 
-import com.Solvd.SolvdLaba.OnlineShop.CustomExceptions.ShipmentNotPaidException;
+import com.Solvd.SolvdLaba.OnlineShop.Shipment.CustomExceptions.ShipmentNotPaidException;
 import com.Solvd.SolvdLaba.OnlineShop.Person.Courier;
+import com.Solvd.SolvdLaba.OnlineShop.Order.Order;
+import com.Solvd.SolvdLaba.OnlineShop.Shop.Shop;
 
 public class Shipment extends Delivery{
     private final Order order;

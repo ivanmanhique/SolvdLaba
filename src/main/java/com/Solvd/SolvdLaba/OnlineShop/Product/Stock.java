@@ -1,4 +1,6 @@
-package com.Solvd.SolvdLaba.OnlineShop.Shop;
+package com.Solvd.SolvdLaba.OnlineShop.Product;
+
+import com.Solvd.SolvdLaba.OnlineShop.Product.Product;
 
 public class Stock<T extends Product>{
 

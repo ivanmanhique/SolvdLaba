@@ -2,11 +2,16 @@ package com.Solvd.SolvdLaba;
 
 
 
-import com.Solvd.SolvdLaba.OnlineShop.CustomExceptions.ShipmentNotPaidException;
+import com.Solvd.SolvdLaba.OnlineShop.Shipment.CustomExceptions.ShipmentNotPaidException;
+import com.Solvd.SolvdLaba.OnlineShop.Order.Receipt;
 import com.Solvd.SolvdLaba.OnlineShop.Payment.Payment;
 import com.Solvd.SolvdLaba.OnlineShop.Person.Client;
 import com.Solvd.SolvdLaba.OnlineShop.Person.Courier;
 import com.Solvd.SolvdLaba.OnlineShop.Person.Entity;
+import com.Solvd.SolvdLaba.OnlineShop.Product.Category;
+import com.Solvd.SolvdLaba.OnlineShop.Product.Product;
+import com.Solvd.SolvdLaba.OnlineShop.Product.Stock;
+import com.Solvd.SolvdLaba.OnlineShop.Shipment.Shipment;
 import com.Solvd.SolvdLaba.OnlineShop.Shop.*;
 
 import java.util.ArrayList;
