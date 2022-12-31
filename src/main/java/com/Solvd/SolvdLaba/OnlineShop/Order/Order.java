@@ -8,19 +8,19 @@ import java.util.List;
 public class Order{
 
     private final List<Stock> productList;
-    private boolean isPaid = false;
+    private OrderStatus orderStatus;
 
     public Order(){
         this.productList = new ArrayList<>();
-
+        this.orderStatus = OrderStatus.CREATED;
     }
 
-    public boolean isPaid(){
-        return isPaid;
+    public OrderStatus getOrderStatus(){
+        return orderStatus;
     }
 
-    public void setPaid(boolean paid){
-        isPaid = paid;
+    public void setOrderStatus(OrderStatus orderStatus){
+        this.orderStatus = orderStatus;
     }
 
     public List<Stock> getProductList(){
@@ -38,6 +38,7 @@ public class Order{
             System.out.println("removed!");
         }
     }
+
 
     public void showOrder(){
         StringBuilder sb = new StringBuilder();

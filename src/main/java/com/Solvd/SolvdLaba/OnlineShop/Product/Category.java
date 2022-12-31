@@ -1,19 +1,15 @@
 package com.Solvd.SolvdLaba.OnlineShop.Product;
 
 public enum Category{
-    HOUSE(2), BOOKS(1), ELECTRONICS(5);
+    HOUSE("HOUSE"), BOOKS("BOOKS"), ELECTRONICS("ELECTRONICS");
 
-    int attributedValue;
+    String attributedValue;
 
-    Category(int attributedValue){
+    Category(String attributedValue){
         this.attributedValue = attributedValue;
     }
 
-    public int getAttributedValue(){
+    public String getAttributedValue(){
         return attributedValue;
-    }
-
-    public void setAttributedValue(int attributedValue){
-        this.attributedValue = attributedValue;
     }
 }

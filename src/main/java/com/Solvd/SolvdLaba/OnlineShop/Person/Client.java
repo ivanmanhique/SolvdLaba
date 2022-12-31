@@ -2,15 +2,16 @@ package com.Solvd.SolvdLaba.OnlineShop.Person;
 
 public class Client extends Person{
 
-    private static long idCounter = 0;
+    private static int nextCustomerId = 1;
+    private final int customerId;
 
     public Client(String name, String surname){
         super(name, surname);
-        this.idCounter = getIdCounter();
+        this.customerId = nextCustomerId++;
     }
 
-    public static long getIdCounter(){
-        return idCounter++;
+    public int getCustomerId(){
+        return customerId;
     }
 
     @Override
@@ -35,6 +36,6 @@ public class Client extends Person{
 
     @Override
     public String toString(){
-        return String.format("%s %s(%d)", getName(),getSurname(), idCounter);
+        return String.format("%s %s(%d)", getName(),getSurname(), nextCustomerId);
     }
 }

@@ -1,6 +1,7 @@
 package com.Solvd.SolvdLaba.OnlineShop.Shipment;
 
 
+import com.Solvd.SolvdLaba.OnlineShop.Order.OrderStatus;
 import com.Solvd.SolvdLaba.OnlineShop.Shipment.CustomExceptions.ShipmentNotPaidException;
 import com.Solvd.SolvdLaba.OnlineShop.Person.Courier;
 import com.Solvd.SolvdLaba.OnlineShop.Order.Order;
@@ -13,7 +14,9 @@ public class Shipment extends Delivery{
     public Shipment(String address, Courier courier, Order order, Shop shop) throws ShipmentNotPaidException{
         super(address, order, courier);
         try{
-            if (!order.isPaid()) throw new Throwable();
+            if (!(OrderStatus.CONFIRMED == order.getOrderStatus())){
+                throw new Throwable();
+            }
             this.order = order;
         } catch (Throwable e){
             throw new ShipmentNotPaidException("Order is not paid", e);

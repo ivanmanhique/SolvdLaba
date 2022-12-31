@@ -1,7 +1,8 @@
 package com.Solvd.SolvdLaba.OnlineShop.Product;
 
 public class Product implements Comparable<Product>{
-    private static long idCounter = 0;
+    private static int nextProductId = 1;
+    private final int productId;
     private final String name;
     private final int price;
     private final Category category;
@@ -11,11 +12,11 @@ public class Product implements Comparable<Product>{
         this.name = name;
         this.price = price;
         this.category = category;
-        idCounter = getIdCounter();
+        productId = nextProductId++;
     }
 
-    private static synchronized long getIdCounter(){
-        return idCounter++;
+    public int getProductId(){
+        return productId;
     }
 
     public String getName(){
@@ -43,7 +44,7 @@ public class Product implements Comparable<Product>{
 
     @Override
     public String toString(){
-        return String.format("Name: %s, price: %d, codeNumber: %d", name, price, idCounter);
+        return String.format("Name: %s, price: %d, codeNumber: %d", name, price, getProductId());
     }
 
     @Override

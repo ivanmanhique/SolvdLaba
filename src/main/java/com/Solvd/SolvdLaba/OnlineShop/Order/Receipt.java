@@ -40,7 +40,7 @@ public class Receipt{
         sb.append(title);
         sb.append("-----------------------------------------\n");
         for (Stock product : productList){
-            sb.append(String.format("%d.  %s  %d  %d", counter, product.getProduct().getName(), product.getProduct().getPrice(), product.getQuantity()));
+            sb.append(String.format("\t%d.  %s  %d  %d", counter, product.getProduct().getName(), product.getProduct().getPrice(), product.getQuantity()));
             sb.append("\n");
             counter++;
         }

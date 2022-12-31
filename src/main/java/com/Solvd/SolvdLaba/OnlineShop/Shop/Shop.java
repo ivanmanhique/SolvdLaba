@@ -3,6 +3,7 @@ package com.Solvd.SolvdLaba.OnlineShop.Shop;
 
 
 import com.Solvd.SolvdLaba.OnlineShop.Order.Order;
+import com.Solvd.SolvdLaba.OnlineShop.Order.OrderStatus;
 import com.Solvd.SolvdLaba.OnlineShop.Order.Receipt;
 import com.Solvd.SolvdLaba.OnlineShop.Payment.Payment;
 import com.Solvd.SolvdLaba.OnlineShop.Product.Stock;
@@ -11,6 +12,7 @@ import com.Solvd.SolvdLaba.OnlineShop.Order.Interfaces.Orderable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Queue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -19,6 +21,8 @@ public class Shop implements Orderable{
     private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
     private final String name;
     private Order order;
+
+    private Queue<Order> orders;
     private List<Stock> productList;
 
 
@@ -32,8 +36,17 @@ public class Shop implements Orderable{
         productList = new ArrayList<>();
     }
 
-    public void welcomeLog(){
+    private void welcomeLog(){
         LOGGER.log(Level.INFO, String.format("Welcome to %s shop XD", name));
+    }
+
+    public void showWelcomeMessage(){
+        welcomeLog();
+        System.out.printf(
+                "Welcome to our beloved %s" +
+                        "\nBelow you can find all " +
+                        "the available materials:\n", name
+        );
     }
 
     public void warningLog(){
@@ -59,7 +72,7 @@ public class Shop implements Orderable{
     public void addProductToShop(Stock stock){
         productList.add(stock);
     }
-    public void goodbye(){
+    public void showGoodbyeMessage(){
         System.out.println("Thank you for visiting our shop\n" +
                 "You will always be welcome\n" +
                 "Best Wishes");
@@ -67,23 +80,29 @@ public class Shop implements Orderable{
 
     public void showProductsInShop(){
         productList.stream()
-                .forEach(p -> System.out.printf("%s  %d\n", p.getProduct().getName(), p.getProduct().getPrice()));
+                .forEach(p -> System.out.printf("\t%s  %d\n", p.getProduct().getName(), p.getProduct().getPrice()));
     }
 
     private void createOrder(){
         order = new Order();
+        //orders.add(order);
     }
 
     @Override
     public void cancelOrder(){
         order = null;
+        order.setOrderStatus(OrderStatus.CANCELLED);
         System.out.println("Order was cancelled");
     }
 
     public void buy(String nameOfProduct, int quantity){
         if(order == null){
             createOrder();
+            order.setOrderStatus(OrderStatus.WAITING_FOR_PAYMENT);
         }
+        //throw an exception if the quantity is greater than the quantity available;
+        //throw an exception in case a product doesnt exist;
+        //Throw exception case the person didnt insert the quantity;
         Stock product;
         for (Stock stock : productList){
             if (stock.getProduct().getName().equalsIgnoreCase(nameOfProduct)){
@@ -91,6 +110,8 @@ public class Shop implements Orderable{
                 int quantityUpdate = stock.getQuantity() - quantity;
                 stock.setQuantity(quantityUpdate);
                 order.addItem(product);
+            }else {
+                order.setOrderStatus(OrderStatus.DECLINED);
             }
         }
         System.out.println("an update of your order list:");
@@ -100,7 +121,7 @@ public class Shop implements Orderable{
     public void confirmOrder(Payment payment){
         Receipt receipt = new Receipt(this, order);
         if (payment.pay(receipt.getTotal())){
-            order.setPaid(true);
+            order.setOrderStatus(OrderStatus.CONFIRMED);
             System.out.println(payment.getPaymentStatus());
             System.out.println("Your order has been paid, below you can find your receipt");
             receipt.printReceipt();
