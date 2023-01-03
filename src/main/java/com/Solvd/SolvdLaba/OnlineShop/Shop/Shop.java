@@ -2,17 +2,18 @@ package com.Solvd.SolvdLaba.OnlineShop.Shop;
 
 
 
+import com.Solvd.SolvdLaba.OnlineShop.Order.Exceptions.OrderNotFoundException;
 import com.Solvd.SolvdLaba.OnlineShop.Order.Order;
 import com.Solvd.SolvdLaba.OnlineShop.Order.OrderStatus;
-import com.Solvd.SolvdLaba.OnlineShop.Order.Receipt;
 import com.Solvd.SolvdLaba.OnlineShop.Payment.Payment;
+import com.Solvd.SolvdLaba.OnlineShop.Person.Customer;
+import com.Solvd.SolvdLaba.OnlineShop.Person.CustomerType;
+import com.Solvd.SolvdLaba.OnlineShop.Product.Exceptions.OutOfStockException;
+import com.Solvd.SolvdLaba.OnlineShop.Product.Exceptions.ProductNotFoundException;
 import com.Solvd.SolvdLaba.OnlineShop.Product.Stock;
 import com.Solvd.SolvdLaba.OnlineShop.Order.Interfaces.Orderable;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Queue;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -20,15 +21,14 @@ public class Shop implements Orderable{
 
     private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
     private final String name;
-    private Order order;
-
-    private Queue<Order> orders;
+    private LinkedList<Order> orders;
     private List<Stock> productList;
 
 
     public Shop(String name, List<Stock> productList){
         this.name = name;
         this.productList = productList;
+        orders = new LinkedList<>();
     }
 
     public Shop(String name){
@@ -57,9 +57,9 @@ public class Shop implements Orderable{
         return name;
     }
 
-    public Order getOrder(){
-        return order;
-    }
+    //public Order getOrder(){
+     //   return order;
+    //}
 
     public List<Stock> getProductList(){
         return productList;
@@ -79,69 +79,122 @@ public class Shop implements Orderable{
     }
 
     public void showProductsInShop(){
-        productList.stream()
-                .forEach(p -> System.out.printf("\t%s  %d\n", p.getProduct().getName(), p.getProduct().getPrice()));
+        productList.forEach(p -> System.out.printf("\t%s  %d\n", p.getProduct().getName(), p.getProduct().getPrice()));
     }
 
-    private void createOrder(){
-        order = new Order();
-        //orders.add(order);
+    public int createOrder(Customer customer){
+        Order order = new Order(customer,this);
+        orders.add(order);
+        System.out.printf("Here is your orderId: %d\n", order.getOrderId());
+        return order.getOrderId();
     }
 
     @Override
-    public void cancelOrder(){
-        order = null;
-        order.setOrderStatus(OrderStatus.CANCELLED);
+    public void cancelOrder(Customer customer, int orderId){
+        for (Order order : customer.getOrders()){
+            if(order.getOrderId() == orderId){
+                order.setOrderStatus(OrderStatus.CANCELLED);
+            }
+        }
         System.out.println("Order was cancelled");
     }
 
-    public void buy(String nameOfProduct, int quantity){
-        if(order == null){
-            createOrder();
-            order.setOrderStatus(OrderStatus.WAITING_FOR_PAYMENT);
-        }
-        //throw an exception if the quantity is greater than the quantity available;
-        //throw an exception in case a product doesnt exist;
-        //Throw exception case the person didnt insert the quantity;
-        Stock product;
-        for (Stock stock : productList){
-            if (stock.getProduct().getName().equalsIgnoreCase(nameOfProduct)){
-                product = new Stock(stock.getProduct(), quantity);
-                int quantityUpdate = stock.getQuantity() - quantity;
-                stock.setQuantity(quantityUpdate);
-                order.addItem(product);
-            }else {
-                order.setOrderStatus(OrderStatus.DECLINED);
+    public Order searchOrder(int orderId){
+        for(Order order: orders){
+            if (order.getOrderId()==orderId){
+                return order;
+            }else{
+                try{
+                    throw new OrderNotFoundException(orderId);
+                }catch (OrderNotFoundException e){
+                    e.printStackTrace();
+                }
             }
         }
-        System.out.println("an update of your order list:");
-        order.showOrder();
+        //Throw exception of order not found
+        return null;
     }
 
-    public void confirmOrder(Payment payment){
-        Receipt receipt = new Receipt(this, order);
-        if (payment.pay(receipt.getTotal())){
+    public void buy(int orderId, String nameOfProduct, int quantity){
+        Stock product;
+        boolean found = false;
+        for (Stock stock : productList){
+            if (stock.getProduct().getName().equalsIgnoreCase(nameOfProduct)){
+                try{
+                found = true;
+                if (stock.getQuantity() < quantity){
+                    throw new OutOfStockException(nameOfProduct, stock);
+                } else{
+                    product = new Stock(stock.getProduct(), quantity);
+                    int quantityUpdate = stock.getQuantity() - quantity;
+                    stock.setQuantity(quantityUpdate);
+                    searchOrder(orderId).addItem(product);
+                }
+                }catch (OutOfStockException e){
+                    e.printStackTrace();
+                }
+            }
+        }
+        if(!found){
+            try{
+                throw new ProductNotFoundException(this, nameOfProduct);
+            }catch (ProductNotFoundException e){
+                e.printStackTrace();
+            }
+
+        }
+    }
+    public void showUpdatedOrder(int orderId){
+        System.out.println("an update of your order list:");
+        searchOrder(orderId).showOrder();
+        System.out.println(searchOrder(orderId).toString());
+    }
+
+    public CustomerType upgradeCustomer(int orderId){
+        Order order = searchOrder(orderId);
+        if (order.getTotal()>=200 && order.getTotal()<500){
+            order.getCustomer().setCustomerType(CustomerType.INTERMEDIATE);
+        } else if (order.getTotal()>=500){
+            order.getCustomer().setCustomerType(CustomerType.PRO);
+        }
+        return order.getCustomer().getCustomerType();
+    }
+    private void applyDiscount(int orderId,CustomerType customerType){
+        if(customerType == CustomerType.PRO){
+            Order order = searchOrder(orderId);
+            int tenPercent = (int) (order.getTotal()*0.1);
+            order.setTotal(order.getTotal()-tenPercent);
+        }else if (customerType == CustomerType.INTERMEDIATE){
+            Order order = searchOrder(orderId);
+            int fivePercent = (int) (order.getTotal()*0.05);
+            order.setTotal(order.getTotal()-fivePercent);
+        }
+    }
+
+    public void confirmOrder(int orderId,Payment payment){
+        Order order = searchOrder(orderId);
+        order.CalculateTotal();
+        applyDiscount(orderId,upgradeCustomer(orderId));
+        if (payment.pay(order.getTotal())){
             order.setOrderStatus(OrderStatus.CONFIRMED);
+            System.out.println(order.getOrderStatus());
             System.out.println(payment.getPaymentStatus());
             System.out.println("Your order has been paid, below you can find your receipt");
-            receipt.printReceipt();
+            order.printReceipt();
         } else{
             System.out.println(payment.getPaymentStatus());
         }
-
     }
 
-    @Override
-    public boolean equals(Object o){
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Shop shop = (Shop) o;
-        return Objects.equals(name, shop.name) && Objects.equals(productList, shop.productList) && Objects.equals(order, shop.order);
-    }
 
     @Override
     public int hashCode(){
-        return Objects.hash(name, productList, order);
+        return this.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj){
+        return this.equals(obj);
     }
 
     @Override
@@ -149,7 +202,7 @@ public class Shop implements Orderable{
         return "Shop{" +
                 "name='" + name + '\'' +
                 ", productList=" + productList +
-                ", order=" + order +
+                ", order=" + //order +
                 '}';
     }
 

@@ -2,21 +2,15 @@ package com.Solvd.SolvdLaba.OnlineShop.Run;
 
 
 
-import com.Solvd.SolvdLaba.OnlineShop.Product.Files.ProductFile;
-import com.Solvd.SolvdLaba.OnlineShop.Shipment.CustomExceptions.ShipmentNotPaidException;
-import com.Solvd.SolvdLaba.OnlineShop.Order.Receipt;
 import com.Solvd.SolvdLaba.OnlineShop.Payment.Payment;
-import com.Solvd.SolvdLaba.OnlineShop.Person.Client;
+import com.Solvd.SolvdLaba.OnlineShop.Person.Customer;
+import com.Solvd.SolvdLaba.OnlineShop.Product.Files.ProductFile;
 import com.Solvd.SolvdLaba.OnlineShop.Person.Courier;
 import com.Solvd.SolvdLaba.OnlineShop.Person.Entity;
-import com.Solvd.SolvdLaba.OnlineShop.Product.Category;
-import com.Solvd.SolvdLaba.OnlineShop.Product.Product;
 import com.Solvd.SolvdLaba.OnlineShop.Product.Stock;
-import com.Solvd.SolvdLaba.OnlineShop.Shipment.Shipment;
 import com.Solvd.SolvdLaba.OnlineShop.Shop.*;
 
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -40,36 +34,31 @@ public class Main{
             System.out.println("Insert your name and surname");
             String clientName = scanner.next();
             String clientSurName = scanner.next();
-            Client client = new Client(clientName, clientSurName);
+            Customer customer = new Customer(clientName, clientSurName);
+            int orderId = shop.createOrder(customer);
 
             boolean stop = false;
             do{
                 System.out.println("Which items would you like to buy? Insert its name and quantity");
                 String productName = scanner.next();
                 int productQuantity = scanner.nextInt();
-                shop.buy(productName,productQuantity);
-
+                shop.buy(orderId,productName,productQuantity);
                 System.out.println("If you want to buy more press 0, if not press one!");
                 choice = scanner.nextInt();
                 if (choice ==1){
                     stop = true;
                 }
             } while (!stop);
+            System.out.println("An update on your order:");
+            shop.showUpdatedOrder(orderId);
 
             String address = "Tchumene, Matola";
             Courier courier = new Courier("Joao", "Entregas");
             System.out.println("Pay for your order: ");
             Entity shopEntity = new Entity(shop.getName(), "Bank account");
-            Receipt receipt = new Receipt(shop, shop.getOrder());
-            Payment payment = new Payment(1234567, 123, "11/25", client, shopEntity, receipt, receipt.getTotal(), address);
-            shop.confirmOrder(payment);
+            Payment payment = new Payment(1234567, 123, "11/25", customer, shopEntity,shop.searchOrder(orderId) , address,100);
+            shop.confirmOrder(orderId,payment);
             shop.showGoodbyeMessage();
-            try{
-                Shipment shipment = new Shipment(address, courier, shop.getOrder(), shop);
-                shipment.ship();
-            } catch (ShipmentNotPaidException e){
-                e.printStackTrace();
-            }
 
         } else{
             shop.showWelcomeMessage();

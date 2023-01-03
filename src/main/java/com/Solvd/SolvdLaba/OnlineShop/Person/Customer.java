@@ -1,0 +1,65 @@
+package com.Solvd.SolvdLaba.OnlineShop.Person;
+
+import com.Solvd.SolvdLaba.OnlineShop.Order.Order;
+
+import java.lang.ref.PhantomReference;
+import java.util.LinkedList;
+
+public class Customer extends Person{
+
+    private static int nextCustomerId = 1;
+    private final int customerId;
+    private CustomerType customerType = CustomerType.BASIC;
+    private LinkedList<Order> orders;
+
+    public Customer(String name, String surname){
+        super(name, surname);
+        this.customerId = nextCustomerId++;
+        orders = new LinkedList<>();
+    }
+
+    public int getCustomerId(){
+        return customerId;
+    }
+
+    public LinkedList<Order> getOrders(){
+        return orders;
+    }
+
+    public void setOrders(LinkedList<Order> orders){
+        this.orders = orders;
+    }
+
+    @Override
+    public String getName(){
+        return super.getName();
+    }
+
+    @Override
+    public String getSurname(){
+        return super.getSurname();
+    }
+
+    @Override
+    public int hashCode(){
+        return super.hashCode();
+    }
+
+    public CustomerType getCustomerType(){
+        return customerType;
+    }
+
+    public void setCustomerType(CustomerType customerType){
+        this.customerType = customerType;
+    }
+
+    @Override
+    public boolean equals(Object obj){
+        return super.equals(obj);
+    }
+
+    @Override
+    public String toString(){
+        return String.format("%s %s(%d)", getName(),getSurname(), getCustomerId());
+    }
+}

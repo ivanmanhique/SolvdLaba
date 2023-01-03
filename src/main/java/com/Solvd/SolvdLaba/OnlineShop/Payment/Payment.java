@@ -1,8 +1,10 @@
 package com.Solvd.SolvdLaba.OnlineShop.Payment;
 
 
+import com.Solvd.SolvdLaba.OnlineShop.Order.Order;
+import com.Solvd.SolvdLaba.OnlineShop.Payment.Exception.InsufficientFundsException;
 import com.Solvd.SolvdLaba.OnlineShop.Person.Person;
-import com.Solvd.SolvdLaba.OnlineShop.Order.Receipt;
+
 
 public class Payment{
     private final long cardNumber;
@@ -11,20 +13,21 @@ public class Payment{
     private final Person sender;
     private final Person receiver;
     private PaymentStatus paymentStatus;
-    private final Receipt receipt;
+    private Order order;
     private final int amount;
     private final String address;
-    private int funds = 100000;
+    private int funds ;
 
-    public Payment(long cardNumber, int threeNumBackCode, String expirationDate, Person sender, Person receiver, Receipt receipt, int amount, String address){
+    public Payment(long cardNumber, int threeNumBackCode, String expirationDate, Person sender, Person receiver, Order receipt,String address, int funds){
         this.cardNumber = cardNumber;
         this.threeNumBackCode = threeNumBackCode;
         this.expirationDate = expirationDate;
         this.sender = sender;
         this.receiver = receiver;
-        this.receipt = receipt;
-        this.amount = amount;
+        this.order = receipt;
+        this.amount = receipt.getTotal();
         this.address = address;
+        this.funds= funds;
     }
 
     public int getFunds(){
@@ -37,7 +40,14 @@ public class Payment{
             paymentStatus = PaymentStatus.SUCCEEDED;
         } else{
             paymentStatus = PaymentStatus.REJECTED;
-            return false;
+            try{
+                throw new InsufficientFundsException(this);
+            }catch (InsufficientFundsException e){
+                e.printStackTrace();
+            }finally{
+                return false;
+            }
+
         }
         return true;
     }
@@ -70,8 +80,8 @@ public class Payment{
         this.paymentStatus = paymentStatus;
     }
 
-    public Receipt getReceipt(){
-        return receipt;
+    public Order getReceipt(){
+        return order;
     }
 
     public int getAmount(){

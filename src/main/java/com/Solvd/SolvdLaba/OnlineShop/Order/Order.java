@@ -1,18 +1,42 @@
 package com.Solvd.SolvdLaba.OnlineShop.Order;
 
+import com.Solvd.SolvdLaba.OnlineShop.Person.Customer;
 import com.Solvd.SolvdLaba.OnlineShop.Product.Stock;
+import com.Solvd.SolvdLaba.OnlineShop.Shop.Shop;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class Order{
 
     private final List<Stock> productList;
     private OrderStatus orderStatus;
+    private static int nextOrderId = 1;
+    private final int orderId;
+    private int total = 0;
+    private Customer customer;
+    private final Shop shop;
 
-    public Order(){
+    public Order(Customer customer, Shop shop){
         this.productList = new ArrayList<>();
         this.orderStatus = OrderStatus.CREATED;
+        this.orderId = nextOrderId++;
+        this.customer = customer;
+        this.shop = shop;
+        customer.getOrders().add(this);
+    }
+
+    public int getOrderId(){
+        return orderId;
+    }
+
+    public Customer getCustomer(){
+        return customer;
+    }
+
+    public void setCustomer(Customer customer){
+        this.customer = customer;
     }
 
     public OrderStatus getOrderStatus(){
@@ -50,5 +74,46 @@ public class Order{
 
         System.out.println(sb);
     }
+    public int CalculateTotal(){
+        for (Stock product : productList){
+            total += ((long) product.getProduct().getPrice() * product.getQuantity());
+        }
 
+        return total;
+    }
+    public int getTotal(){
+       return total;
+    }
+
+    public void setTotal(int total){
+        this.total = total;
+    }
+
+    public void printReceipt(){
+        Date date = new Date();
+        StringBuilder sb = new StringBuilder();
+        int counter = 1;
+        String title = String.format("\t%s\n", shop.getName());
+        sb.append(title);
+        sb.append("-----------------------------------------\n");
+        for (Stock product : productList){
+            sb.append(String.format("\t%d.  %s  %d  %d", counter, product.getProduct().getName(), product.getProduct().getPrice(), product.getQuantity()));
+            sb.append("\n");
+            counter++;
+        }
+        sb.append("\n");
+        sb.append("-----------------------------------------\n");
+        sb.append(String.format("Name: %s %s\nDate: %s\n", customer.getName(), customer.getSurname(), date));
+        sb.append(String.format("Total: %d\n\tPAID", getTotal()));
+
+        System.out.println(sb);
+    }
+
+    @Override
+    public String toString(){
+        return "Order{" +
+                "orderId=" + getOrderId() +
+                ", customer=" + customer.getCustomerId() +
+                '}';
+    }
 }
