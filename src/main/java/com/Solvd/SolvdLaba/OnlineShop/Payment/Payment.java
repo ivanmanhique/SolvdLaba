@@ -3,31 +3,42 @@ package com.Solvd.SolvdLaba.OnlineShop.Payment;
 
 import com.Solvd.SolvdLaba.OnlineShop.Order.Order;
 import com.Solvd.SolvdLaba.OnlineShop.Payment.Exception.InsufficientFundsException;
+import com.Solvd.SolvdLaba.OnlineShop.Payment.Exception.NonExistentAccount;
+import com.Solvd.SolvdLaba.OnlineShop.Payment.Files.AccountFile;
 import com.Solvd.SolvdLaba.OnlineShop.Person.Person;
+
+import java.nio.file.Path;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 public class Payment{
-    private final long cardNumber;
-    private final int threeNumBackCode;
-    private final String expirationDate;
+
+    private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+    private final Account account;
     private final Person sender;
     private final Person receiver;
     private PaymentStatus paymentStatus;
     private Order order;
     private final int amount;
-    private final String address;
-    private int funds ;
+    private String address;
+    private int funds;
+    private static Set<Account> accounts = AccountFile.parse(Path.of("C:/Users/ivanm/IdeaProjects/SolvdLaba/src/main/java/com/Solvd/SolvdLaba/OnlineShop/Payment/Files/Accounts").toFile());
 
-    public Payment(long cardNumber, int threeNumBackCode, String expirationDate, Person sender, Person receiver, Order receipt,String address, int funds){
-        this.cardNumber = cardNumber;
-        this.threeNumBackCode = threeNumBackCode;
-        this.expirationDate = expirationDate;
+    public Payment(Account account, Person sender, Person receiver, Order receipt, String address){
+        this.account = account;
         this.sender = sender;
         this.receiver = receiver;
         this.order = receipt;
         this.amount = receipt.getTotal();
         this.address = address;
-        this.funds= funds;
+        this.funds = account.getFunds();
+    }
+
+    public Account getAccount(){
+        return account;
     }
 
     public int getFunds(){
@@ -42,9 +53,8 @@ public class Payment{
             paymentStatus = PaymentStatus.REJECTED;
             try{
                 throw new InsufficientFundsException(this);
-            }catch (InsufficientFundsException e){
+            } catch (InsufficientFundsException e){
                 e.printStackTrace();
-            }finally{
                 return false;
             }
 
@@ -52,16 +62,19 @@ public class Payment{
         return true;
     }
 
-    public long getCardNumber(){
-        return cardNumber;
-    }
-
-    public int getThreeNumBackCode(){
-        return threeNumBackCode;
-    }
-
-    public String getExpirationDate(){
-        return expirationDate;
+    public static boolean validateAccount(Account account){
+        System.out.println("Validating your account");
+        for (Account account1 : accounts){
+            if(account1.getCardNumber() ==account.getCardNumber()){
+                return true;
+            }
+        }
+        try{
+            throw new NonExistentAccount(account);
+        }catch (NonExistentAccount e){
+            e.printStackTrace();
+            return false;
+        }
     }
 
     public Person getSender(){

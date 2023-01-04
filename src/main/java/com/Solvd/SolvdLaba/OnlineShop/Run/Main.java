@@ -2,6 +2,8 @@ package com.Solvd.SolvdLaba.OnlineShop.Run;
 
 
 
+import com.Solvd.SolvdLaba.OnlineShop.Payment.Account;
+import com.Solvd.SolvdLaba.OnlineShop.Payment.AccountType;
 import com.Solvd.SolvdLaba.OnlineShop.Payment.Payment;
 import com.Solvd.SolvdLaba.OnlineShop.Person.Customer;
 import com.Solvd.SolvdLaba.OnlineShop.Product.Files.ProductFile;
@@ -56,10 +58,14 @@ public class Main{
             Courier courier = new Courier("Joao", "Entregas");
             System.out.println("Pay for your order: ");
             Entity shopEntity = new Entity(shop.getName(), "Bank account");
-            Payment payment = new Payment(1234567, 123, "11/25", customer, shopEntity,shop.searchOrder(orderId) , address,100);
+            System.out.println("Provide your account:");
+
+            Account account = new Account(12345, 123,"12/24", AccountType.VISA,100);
+            //Payment.validateAccount(account);
+            Payment payment = new Payment(account, customer, shopEntity,shop.searchOrder(orderId) , address);
             shop.confirmOrder(orderId,payment);
             shop.showGoodbyeMessage();
-
+//JOIN COURIER TO SUM AND SHIP THE ORDERS;
         } else{
             shop.showWelcomeMessage();
             shop.showProductsInShop();

@@ -111,7 +111,6 @@ public class Shop implements Orderable{
                 }
             }
         }
-        //Throw exception of order not found
         return null;
     }
 
@@ -175,7 +174,7 @@ public class Shop implements Orderable{
         Order order = searchOrder(orderId);
         order.CalculateTotal();
         applyDiscount(orderId,upgradeCustomer(orderId));
-        if (payment.pay(order.getTotal())){
+        if (Payment.validateAccount(payment.getAccount())&&payment.pay(order.getTotal())){
             order.setOrderStatus(OrderStatus.CONFIRMED);
             System.out.println(order.getOrderStatus());
             System.out.println(payment.getPaymentStatus());
