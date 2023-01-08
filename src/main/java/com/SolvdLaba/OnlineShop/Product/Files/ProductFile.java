@@ -15,7 +15,7 @@ import java.util.regex.Pattern;
 
 public class ProductFile{
 
-    private static String pattern = new String("([A-Z]{1}[a-z]+)\s([0-9]+)\s([A-Z]+)\s([0-9]+)");
+    private static final String pattern = "([A-Z]{1}[a-z]+)\s([0-9]+)\s([A-Z]+)\s([0-9]+)";
     static Pattern pat = Pattern.compile(pattern, Pattern.CASE_INSENSITIVE);
 
     public static List<Stock> parse(File file){
@@ -36,15 +36,15 @@ public class ProductFile{
                     price = Integer.parseInt(wholeLine[1]);
                     category = Category.valueOf(wholeLine[2]);
                     quantity = Integer.parseInt(wholeLine[3]);
-                    Product product = new Product(name,price,category);
-                    Stock stock = new Stock<>(product,quantity);
+                    Product product = new Product(name, price, category);
+                    Stock stock = new Stock<>(product, quantity);
                     stocks.add(stock);
                 }
             }
-        }catch (IOException e){
+        } catch (IOException e){
             e.printStackTrace();
         }
 
-                    return stocks;
+        return stocks;
     }
 }

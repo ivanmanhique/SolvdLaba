@@ -8,6 +8,6 @@ public class InsufficientFundsException extends Exception{
 
     public InsufficientFundsException(Payment payment){
         super(String.format("The account %o does not have sufficient funds to make this transaction\nPlease deposit money into your account" +
-                "\nDate: %s", payment.getAccount().getCardNumber(),new Date()));
+                "\nDate: %s", payment.getAccount().getCardNumber(), new Date()));
     }
 }

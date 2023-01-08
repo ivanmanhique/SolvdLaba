@@ -16,15 +16,15 @@ import java.util.logging.Logger;
 public class Payment{
 
     private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+    private static final Set<Account> accounts = AccountFile.parse(Path.of("C:/Users/ivanm/IdeaProjects/SolvdLaba/src/main/java/com/SolvdLaba/OnlineShop/Payment/Files/Accounts").toFile());
     private final Account account;
     private final Person sender;
     private final Person receiver;
-    private PaymentStatus paymentStatus;
-    private Order order;
     private final int amount;
-    private String address;
+    private PaymentStatus paymentStatus;
+    private final Order order;
+    private final String address;
     private int funds;
-    private static Set<Account> accounts = AccountFile.parse(Path.of("C:/Users/ivanm/IdeaProjects/SolvdLaba/src/main/java/com/SolvdLaba/OnlineShop/Payment/Files/Accounts").toFile());
 
     public Payment(Account account, Person sender, Person receiver, Order receipt, String address){
         this.account = account;
@@ -34,6 +34,21 @@ public class Payment{
         this.amount = receipt.getTotal();
         this.address = address;
         this.funds = account.getFunds();
+    }
+
+    public static boolean validateAccount(Account account){
+        System.out.println("Validating your account");
+        for (Account account1 : accounts){
+            if (account1.getCardNumber() == account.getCardNumber()){
+                return true;
+            }
+        }
+        try{
+            throw new NonExistentAccount(account);
+        } catch (NonExistentAccount e){
+            e.printStackTrace();
+            return false;
+        }
     }
 
     public Account getAccount(){
@@ -60,21 +75,6 @@ public class Payment{
 
         }
         return true;
-    }
-
-    public static boolean validateAccount(Account account){
-        System.out.println("Validating your account");
-        for (Account account1 : accounts){
-            if(account1.getCardNumber() ==account.getCardNumber()){
-                return true;
-            }
-        }
-        try{
-            throw new NonExistentAccount(account);
-        }catch (NonExistentAccount e){
-            e.printStackTrace();
-            return false;
-        }
     }
 
     public Person getSender(){

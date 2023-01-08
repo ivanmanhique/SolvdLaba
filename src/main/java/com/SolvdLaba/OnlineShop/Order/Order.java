@@ -10,13 +10,13 @@ import java.util.List;
 
 public class Order{
 
-    private final List<Stock> productList;
-    private OrderStatus orderStatus;
     private static int nextOrderId = 1;
+    private final List<Stock> productList;
     private final int orderId;
+    private final Shop shop;
+    private OrderStatus orderStatus;
     private int total = 0;
     private Customer customer;
-    private final Shop shop;
 
     public Order(Customer customer, Shop shop){
         this.productList = new ArrayList<>();
@@ -74,6 +74,7 @@ public class Order{
 
         System.out.println(sb);
     }
+
     public int CalculateTotal(){
         for (Stock product : productList){
             total += ((long) product.getProduct().getPrice() * product.getQuantity());
@@ -81,8 +82,9 @@ public class Order{
 
         return total;
     }
+
     public int getTotal(){
-       return total;
+        return total;
     }
 
     public void setTotal(int total){

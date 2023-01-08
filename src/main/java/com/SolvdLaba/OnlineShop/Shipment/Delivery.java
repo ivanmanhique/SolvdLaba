@@ -1,18 +1,15 @@
 package com.SolvdLaba.OnlineShop.Shipment;
 
-import com.SolvdLaba.OnlineShop.Person.Courier;
 import com.SolvdLaba.OnlineShop.Order.Order;
 
 public class Delivery{
     private final String address;
     private final Order order;
     private int deliveryPrice = 15;
-    private final Courier courier;
 
-    public Delivery(String address, Order order, Courier courier){
+    public Delivery(String address, Order order){
         this.address = address;
         this.order = order;
-        this.courier = courier;
     }
 
     public Order getOrder(){
@@ -29,9 +26,5 @@ public class Delivery{
 
     public String getAddress(){
         return address;
-    }
-
-    public Courier getCourier(){
-        return courier;
     }
 }

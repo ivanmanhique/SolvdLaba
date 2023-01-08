@@ -14,8 +14,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class AccountFile{
-    private static String pattern = new String("([0-9]{5})\s([0-9]{3})\s([0-9]{2}/[0-9]{2})\s([A-Z]+)\s([0-9]+)");
+    private static final String pattern = "([0-9]{5})\s([0-9]{3})\s([0-9]{2}/[0-9]{2})\s([A-Z]+)\s([0-9]+)";
     static Pattern pat = Pattern.compile(pattern, Pattern.CASE_INSENSITIVE);
+
     public static Set<Account> parse(File file){
         Set<Account> accounts = new HashSet<>();
         try{
@@ -31,11 +32,11 @@ public class AccountFile{
                     String expirationDate = wholeLine[2];
                     AccountType accountType = AccountType.valueOf(wholeLine[3]);
                     int funds = Integer.parseInt(wholeLine[4]);
-                    Account account = new Account(cardNumber,threeNumBackCode,expirationDate,accountType,funds);
+                    Account account = new Account(cardNumber, threeNumBackCode, expirationDate, accountType, funds);
                     accounts.add(account);
                 }
             }
-        }catch (IOException e){
+        } catch (IOException e){
             e.printStackTrace();
         }
 

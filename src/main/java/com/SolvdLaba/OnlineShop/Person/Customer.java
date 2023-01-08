@@ -59,6 +59,6 @@ public class Customer extends Person{
 
     @Override
     public String toString(){
-        return String.format("%s %s(%d)", getName(),getSurname(), getCustomerId());
+        return String.format("%s %s(%d)", getName(), getSurname(), getCustomerId());
     }
 }

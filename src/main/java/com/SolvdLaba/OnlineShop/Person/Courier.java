@@ -1,9 +1,20 @@
 package com.SolvdLaba.OnlineShop.Person;
 
+import com.SolvdLaba.OnlineShop.Shipment.Shipment;
+
+import java.util.LinkedList;
+import java.util.List;
+
 public class Courier extends Person{
 
-    public Courier(String name, String surname){
+
+    private List<Shipment> shipments;
+    private final String contactNum;
+
+    public Courier(String name, String surname,String contactNum){
         super(name, surname);
+        this.contactNum = contactNum;
+        shipments = new LinkedList<>();
     }
 
     @Override
@@ -20,4 +31,24 @@ public class Courier extends Person{
     public String toString(){
         return super.toString();
     }
+
+    public List<Shipment> getShipment(){
+        return shipments;
+    }
+
+    public void setShipment(List<Shipment> shipment){
+        this.shipments = shipment;
+    }
+
+    public void addShipment(Shipment shipment){
+        shipments.add(shipment);
+    }
+    public void removeShipment(Shipment shipment){
+        shipments.remove(shipment);
+    }
+
+    public String getContactNum(){
+        return contactNum;
+    }
+
 }
