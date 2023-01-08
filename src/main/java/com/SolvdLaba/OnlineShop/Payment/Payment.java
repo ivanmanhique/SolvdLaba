@@ -10,26 +10,21 @@ import com.SolvdLaba.OnlineShop.Person.Person;
 
 import java.nio.file.Path;
 import java.util.Set;
-import java.util.logging.Logger;
 
 
 public class Payment{
-
-    private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
     private static final Set<Account> accounts = AccountFile.parse(Path.of("C:/Users/ivanm/IdeaProjects/SolvdLaba/src/main/java/com/SolvdLaba/OnlineShop/Payment/Files/Accounts").toFile());
     private final Account account;
     private final Person sender;
-    private final Person receiver;
     private final int amount;
     private PaymentStatus paymentStatus;
     private final Order order;
     private final String address;
     private int funds;
 
-    public Payment(Account account, Person sender, Person receiver, Order receipt, String address){
+    public Payment(Account account, Person sender, Order receipt, String address){
         this.account = account;
         this.sender = sender;
-        this.receiver = receiver;
         this.order = receipt;
         this.amount = receipt.getTotal();
         this.address = address;
@@ -79,10 +74,6 @@ public class Payment{
 
     public Person getSender(){
         return sender;
-    }
-
-    public Person getReceiver(){
-        return receiver;
     }
 
     public PaymentStatus getPaymentStatus(){

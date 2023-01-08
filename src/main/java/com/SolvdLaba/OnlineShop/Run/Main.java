@@ -6,7 +6,6 @@ import com.SolvdLaba.OnlineShop.Payment.AccountType;
 import com.SolvdLaba.OnlineShop.Payment.Payment;
 import com.SolvdLaba.OnlineShop.Person.Courier;
 import com.SolvdLaba.OnlineShop.Person.Customer;
-import com.SolvdLaba.OnlineShop.Person.Entity;
 import com.SolvdLaba.OnlineShop.Product.Files.ProductFile;
 import com.SolvdLaba.OnlineShop.Product.Stock;
 import com.SolvdLaba.OnlineShop.Shipment.Shipment;
@@ -55,11 +54,10 @@ public class Main{
 
             String address = "Tchumene, Matola";
             System.out.println("Pay for your order: ");
-            Entity shopEntity = new Entity(shop.getName(), "Bank account");
             System.out.println("Provide your account:");
 
             Account account = new Account(12345, 123, "12/24", AccountType.VISA, 100);
-            Payment payment = new Payment(account, customer, shopEntity, shop.searchOrder(orderId), address);
+            Payment payment = new Payment(account, customer,shop.searchOrder(orderId), address);
             shop.confirmOrder(orderId, payment);
             shop.showGoodbyeMessage();
             Shipment shipment = new Shipment("Matola", shop.searchOrder(orderId), shop);
@@ -77,6 +75,7 @@ public class Main{
             shop.showGoodbyeMessage();
             System.out.println("How was your experience in the shop from 1-10");
             int rate = scanner.nextInt();
+
             Shop.clientShopRating(rate);
             scanner.close();
         }

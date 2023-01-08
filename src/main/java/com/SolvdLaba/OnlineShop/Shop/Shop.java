@@ -180,7 +180,16 @@ public class Shop implements Orderable{
         }
     }
     public static void clientShopRating(int rate){
-        LOGGER.info(String.format("rate: %d", rate));
+
+        if(rate>10 || rate<1){
+            try{
+                throw new InvalidRatingException(rate);
+            }catch (InvalidRatingException e){
+                e.printStackTrace();
+            }
+        }else{
+            LOGGER.info(String.format("rate: %d", rate));
+        }
     }
 
 
