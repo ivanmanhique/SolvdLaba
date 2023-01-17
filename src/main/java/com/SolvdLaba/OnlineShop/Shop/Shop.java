@@ -39,6 +39,19 @@ public class Shop implements Orderable{
         productList = new ArrayList<>();
     }
 
+    public static void clientShopRating(int rate){
+
+        if (rate > 10 || rate < 1){
+            try{
+                throw new InvalidRatingException(rate);
+            } catch (InvalidRatingException e){
+                e.printStackTrace();
+            }
+        } else{
+            LOGGER.info(String.format("rate: %d", rate));
+        }
+    }
+
     public void showWelcomeMessage(){
         System.out.printf(
                 "Welcome to our beloved %s" +
@@ -179,19 +192,6 @@ public class Shop implements Orderable{
             System.out.println(payment.getPaymentStatus());
         }
     }
-    public static void clientShopRating(int rate){
-
-        if(rate>10 || rate<1){
-            try{
-                throw new InvalidRatingException(rate);
-            }catch (InvalidRatingException e){
-                e.printStackTrace();
-            }
-        }else{
-            LOGGER.info(String.format("rate: %d", rate));
-        }
-    }
-
 
     @Override
     public int hashCode(){

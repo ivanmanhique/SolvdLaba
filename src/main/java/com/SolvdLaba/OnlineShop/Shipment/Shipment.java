@@ -7,8 +7,6 @@ import com.SolvdLaba.OnlineShop.Person.Courier;
 import com.SolvdLaba.OnlineShop.Shipment.CustomExceptions.ShipmentNotPaidException;
 import com.SolvdLaba.OnlineShop.Shop.Shop;
 
-import java.util.logging.Logger;
-
 public class Shipment extends Delivery{
     private final Order order;
     private final Shop shop;
@@ -21,7 +19,7 @@ public class Shipment extends Delivery{
 
     public static void ship(Courier courier, Shipment shipment){
         if (shipment.getOrder().getOrderStatus() == OrderStatus.CONFIRMED){
-            System.out.printf("Order %d has been shipped by the courier: %s\n", shipment.order.getOrderId(),courier.getName());
+            System.out.printf("Order %d has been shipped by the courier: %s\n", shipment.order.getOrderId(), courier.getName());
             courier.removeShipment(shipment);
         } else{
             try{

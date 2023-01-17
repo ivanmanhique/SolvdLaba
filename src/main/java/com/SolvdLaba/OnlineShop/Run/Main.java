@@ -21,7 +21,9 @@ public class Main{
     }
 
     public static void RunShop(){
-        List<Stock> productList = ProductFile.parse(Path.of("C:/Users/ivanm/IdeaProjects/SolvdLaba/src/main/java/com/SolvdLaba/OnlineShop/Product/Files/ProductsFile").toFile());
+
+        List<Stock> productList = ProductFile.parse(Path.of("src/main/java/com/SolvdLaba/OnlineShop/Product/Files/ProductsFile").toFile());
+
         Shop shop = new Shop("ShopRight", productList);
         shop.showWelcomeMessage();
         shop.showProductsInShop();
@@ -57,13 +59,14 @@ public class Main{
             System.out.println("Provide your account:");
 
             Account account = new Account(12345, 123, "12/24", AccountType.VISA, 100);
-            Payment payment = new Payment(account, customer,shop.searchOrder(orderId), address);
+            account.topUp(500);
+            Payment payment = new Payment(account, customer, shop.searchOrder(orderId), address);
             shop.confirmOrder(orderId, payment);
             shop.showGoodbyeMessage();
             Shipment shipment = new Shipment("Matola", shop.searchOrder(orderId), shop);
             Courier courier = new Courier("Joao", "Entregas", "123-656-907");
             courier.addShipment(shipment);
-            Shipment.ship(courier,shipment);
+            Shipment.ship(courier, shipment);
 
             System.out.println("How was your experience in the shop from 1-10");
             int rate = scanner.nextInt();

@@ -11,8 +11,8 @@ public class Customer extends Person{
     private CustomerType customerType = CustomerType.BASIC;
     private LinkedList<Order> orders;
 
-    public Customer(String name, String surname){
-        super(name, surname);
+    public Customer(String clientFirstName, String clientSurname){
+        super(clientFirstName, clientSurname);
         this.customerId = nextCustomerId++;
         orders = new LinkedList<>();
     }
@@ -27,16 +27,6 @@ public class Customer extends Person{
 
     public void setOrders(LinkedList<Order> orders){
         this.orders = orders;
-    }
-
-    @Override
-    public String getName(){
-        return super.getName();
-    }
-
-    @Override
-    public String getSurname(){
-        return super.getSurname();
     }
 
     @Override

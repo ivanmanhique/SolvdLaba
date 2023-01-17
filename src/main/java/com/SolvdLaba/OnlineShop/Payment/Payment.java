@@ -13,13 +13,13 @@ import java.util.Set;
 
 
 public class Payment{
-    private static final Set<Account> accounts = AccountFile.parse(Path.of("C:/Users/ivanm/IdeaProjects/SolvdLaba/src/main/java/com/SolvdLaba/OnlineShop/Payment/Files/Accounts").toFile());
+    private static final Set<Account> accounts = AccountFile.parse(Path.of("src/main/java/com/SolvdLaba/OnlineShop/Payment/Files/Accounts").toFile());
     private final Account account;
     private final Person sender;
     private final int amount;
-    private PaymentStatus paymentStatus;
     private final Order order;
     private final String address;
+    private PaymentStatus paymentStatus;
     private int funds;
 
     public Payment(Account account, Person sender, Order receipt, String address){

@@ -8,10 +8,10 @@ import java.util.List;
 public class Courier extends Person{
 
 
-    private List<Shipment> shipments;
     private final String contactNum;
+    private List<Shipment> shipments;
 
-    public Courier(String name, String surname,String contactNum){
+    public Courier(String name, String surname, String contactNum){
         super(name, surname);
         this.contactNum = contactNum;
         shipments = new LinkedList<>();
@@ -43,6 +43,7 @@ public class Courier extends Person{
     public void addShipment(Shipment shipment){
         shipments.add(shipment);
     }
+
     public void removeShipment(Shipment shipment){
         shipments.remove(shipment);
     }

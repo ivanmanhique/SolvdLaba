@@ -32,6 +32,14 @@ public class Account{
         return funds;
     }
 
+    public void setFunds(int funds){
+        this.funds = funds;
+    }
+
+    public void topUp(int value){
+        funds += value;
+    }
+
     public AccountType getAccountType(){
         return accountType;
     }
