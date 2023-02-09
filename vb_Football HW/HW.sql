@@ -1,7 +1,7 @@
-ALTER TABLE:
+-- ALTER TABLE:
 
 
-1. ALTER TABLE `vb_Football`.`Players`
+ALTER TABLE `vb_Football`.`Players`
 ADD Team_id int,
 ADD INDEX `fk_Players_Team1_idx` (`Team_id` ASC),
 ADD  CONSTRAINT `fk_Players_Team1`
@@ -11,20 +11,20 @@ ADD  CONSTRAINT `fk_Players_Team1`
     ON UPDATE NO ACTION
 ;
 
-2. ALTER TABLE vb_Football.PlayerStats
+ALTER TABLE vb_Football.PlayerStats
 ADD date_ date not null;
 
-3. ALTER TABLE vb_Football.Nationality
+ALTER TABLE vb_Football.Nationality
 ADD city varchar(20);
 
-4. ALTER TABLE vb_Football.Nationality
+ALTER TABLE vb_Football.Nationality
 DROP COLUMN city;
 
-5. ALTER TABLE vb_Football.Match
+ALTER TABLE vb_Football.Match
 CHANGE COLUMN date_  match_date DATE;
 
 
-UPDATE:
+-- UPDATE:
 
 
 UPDATE vb_Football.Referree set name = 'Pablo C' WHERE id= 2;
@@ -42,7 +42,7 @@ UPDATE vb_Football.Players set Team_id=2 where id >3 and id <7
 
 
 
-DELETIONS:
+-- DELETIONS:
 
 
 INSERT INTO vb_Football.Position values (10, 'GK');
@@ -66,8 +66,8 @@ DELETE FROM vb_Football.Position WHERE id = 17;
 DELETE FROM vb_Football.Position WHERE id = 18;
 DELETE FROM vb_Football.Position WHERE id = 19;
 
-# INSERTIONS:
-**Positions :**
+-- INSERTIONS:
+-- Positions :
 INSERT INTO vb_Football.Position values (1, 'GK');
 INSERT INTO vb_Football.Position values (2, 'LB');
 INSERT INTO vb_Football.Position values (3, 'CB');
@@ -78,21 +78,21 @@ INSERT INTO vb_Football.Position values (7, 'RW');
 INSERT INTO vb_Football.Position values (8, 'LW');
 INSERT INTO vb_Football.Position values (9, 'ST');
 
-**Referres :**
+-- Referres :
 INSERT INTO vb_Football.Referree values (1, 'Pierluigi Collina');
 INSERT INTO vb_Football.Referree values (2, 'Joao Tembe');
 INSERT INTO vb_Football.Referree values (4, 'Joao Tembe');
 INSERT INTO vb_Football.Referree values (6, 'Ricardo Carvalho');
 INSERT INTO vb_Football.Referree values (8, 'Richard Enderson');
 
-**Season :**
+--Season :
 INSERT INTO vb_Football.Season values (1, '2013/14');
 INSERT INTO vb_Football.Season values (2, '2014/15');
 INSERT INTO vb_Football.Season values (3, '2015/16');
 INSERT INTO vb_Football.Season values (4, '2016/17');
 INSERT INTO vb_Football.Season values (5, '2018/19');
 
-**Stadiums:**
+--Stadiums:
 INSERT INTO vb_Football.Stadium values (1, 'Santiago Bernabeu');
 INSERT INTO vb_Football.Stadium values (2, 'Camp Nou');
 INSERT INTO vb_Football.Stadium values (3, 'Old Trafford');
@@ -100,13 +100,13 @@ INSERT INTO vb_Football.Stadium values (4, 'Parc de Princes');
 INSERT INTO vb_Football.Stadium values (5, 'Allianz Arena');
 INSERT INTO vb_Football.Stadium values (6, 'Ethiad Stadium');
 
-**Nationality :**
+--Nationality :
 INSERT INTO vb_Football.Nationality values (1, 'Mozambique');
 INSERT INTO vb_Football.Nationality values (2, 'Spain');
 INSERT INTO vb_Football.Nationality values (3, 'Brazil');
 INSERT INTO vb_Football.Nationality values (4, 'Argentina');
 
-**PlayerStats :**
+--PlayerStats :
 
 INSERT INTO vb_Football.PlayerStats values (1,0,0,3,2,'2017-08-16'); /*vini*/
 INSERT INTO vb_Football.PlayerStats values (2,1,0,3,1,'2017-08-16'); /* pepe*/
@@ -115,19 +115,19 @@ INSERT INTO vb_Football.PlayerStats values (4,0,0,0,2,'2017-08-16'); /*Meessi*/
 INSERT INTO vb_Football.PlayerStats values (5,0,2,0,0,'2017-08-16'); /*Ramos*/
 INSERT INTO vb_Football.PlayerStats values (6,0,0,0,1,'2017-08-16');/*Mbappe*/
 
-**League :**
+--League :
 
 INSERT INTO vb_Football.League(name,country) values ('World Club Tournament',1);
 INSERT INTO vb_Football.League(name,country) values ('European + SA Tournament',2);
 
-**League_Season :**
+--League_Season :
 INSERT INTO vb_Football.League_Season(Season_id, League_id) values (4,1);
 INSERT INTO vb_Football.League_Season(Season_id, League_id) values (4,2);
 INSERT INTO vb_Football.League_Season(Season_id, League_id) values (5,1);
 INSERT INTO vb_Football.League_Season(Season_id, League_id) values (5,2);
 
 
-**Players and Teams :**
+--Players and Teams :
 
 INSERT INTO vb_Football.Players(firstname, lastname,PlayerStats_id,Position_id,Nationality_id,Team_id) values ('Vini','Jr', 1,8,3,null);
 INSERT INTO vb_Football.Players(firstname, lastname,PlayerStats_id,Position_id,Nationality_id,Team_id) values ('Pepe','Mau', 2,3,3,null); /*update name*/
@@ -139,22 +139,22 @@ INSERT INTO vb_Football.Players(firstname, lastname,PlayerStats_id,Position_id,N
 INSERT INTO vb_Football.Players(firstname, lastname,PlayerStats_id,Position_id,Nationality_id,Team_id) values ('K.','Mbappe', 6,9,3,null);
 INSERT INTO vb_Football.Team (name,League_id, Players_id) values('PSG',2,4 );
 
-**Team_League :**
+--Team_League :
 
 INSERT INTO vb_Football.Team_League(League_id,Team_id) values (1,1);
 INSERT INTO vb_Football.Team_League(League_id,Team_id) values (1,2);
 
-**MATCH :**
+--MATCH :--
 INSERT INTO vb_Football.Match(date_,Team1, Team2) values ('2017-08-16', 1,2);
 
-**Match_Referrees :**
+--Match_Referrees :
 INSERT INTO vb_Football.Match_Referrees( Referree_id,Match_id) values (1,1);
 
 INSERT INTO vb_Football.Match_League( League_id,Match_id) values (2,1);
 INSERT INTO vb_Football.Match_Stadium( Stadium_id,Match_id) values (2,1);
 
 
-ONE BIG STATEMENT:
+-- ONE BIG STATEMENT:
  SELECT *
  FROM vb_Football.Players p
  JOIN vb_Football.Nationality n ON p.Nationality_id = n.id
@@ -172,7 +172,7 @@ ONE BIG STATEMENT:
  JOIN vb_Football.Referree r ON mr.Referree_id = r.id;
 
 
-5 Joins:
+-- 5 Joins:
 
 -- inner join
  SELECT p.firstname, p.lastname, pos.name as 'position'
@@ -200,7 +200,7 @@ FROM vb_Football.League l
 LEFT JOIN vb_Football.League_Season ls ON l.id = ls.League_id;
 
 
-# 7 Group by:
+-- 7 Group by:
 
 -- 1
 SELECT COUNT(*), Team_id
@@ -238,7 +238,7 @@ FROM vb_Football.PlayerStats
 group by yellowCard;
 
 
-Group by with Having:
+-- Group by with Having:
 
 SELECT COUNT(*), Country
 FROM vb_Football.League
